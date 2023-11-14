@@ -60,18 +60,19 @@ public class HomeController {
         }
 
         Optional optEmployer = employerRepository.findById(employerId);
+        if (skills != null) {
+            List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+            newJob.setSkills(skillObjs);
+        }
         if (optEmployer.isPresent()) {
             Employer employer = (Employer) optEmployer.get();
-            if (skills != null) {
-                List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-                newJob.setSkills(skillObjs);
-            }
+
             newJob.setEmployer(employer);
             jobRepository.save(newJob);
 
         }
 
-        return "redirect:";
+        return "redirect:/list/jobs?column=All&value=View All";
     }
 
     @GetMapping("view/{jobId}")
